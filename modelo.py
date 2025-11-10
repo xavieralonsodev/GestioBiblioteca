@@ -1,0 +1,100 @@
+import json
+from pathlib import Path
+import menu, os
+
+class Libro:
+    def __init__(self, titulo, autor, isbn,disponible):
+        self.titulo = titulo
+        self.autor = autor
+        self.isbn = isbn
+        self.disponible = disponible
+
+    def prestar(self):
+        if self.disponible:
+            self.disponible = False
+            return True
+        return False
+
+    def devolver(self):
+        self.disponible = True
+
+    def __str__(self):
+        estado = "Disponible" if self.disponible else "Prestado"
+        return f"{self.titulo} por {self.autor} (ISBN: {self.isbn}) - {estado}"
+
+def main():
+    catalogo = []
+
+    Libros = [
+        Libro('Carrie', 'Stephen King', '0-7645-2641-1', True),
+        Libro('El resplandor', 'Stephen King', '0-7645-2642-2', True),
+        Libro('Rabia', 'Stephen King', '0-7645-2643-3', True),
+        Libro('La danza de la muerte', 'Stephen King', '0-7645-2644-4', True),
+        Libro('La larga marcha', 'Stephen King', '0-7645-2645-5', True),
+        Libro('La zona muerta', 'Stephen King', '0-7645-2646-6', True),
+        Libro('It', 'Stephen King', '0-7645-2647-7', True),
+        Libro('Misery', 'Stephen King', '0-7645-2648-8', True),
+        Libro('El misterio de Salem\'s Lot', 'Stephen King', '0-7645-2650-0', True),
+        Libro('Christine', 'Stephen King', '0-7645-2651-1', True),
+        Libro('El fugitivo', 'Stephen King', '0-7645-2652-2', True),
+        Libro('Apocalipsis', 'Stephen King', '0-7645-2653-3', True),
+        Libro('La torre oscura I: El pistolero', 'Stephen King', '0-7645-2654-4', True),
+        Libro('La torre oscura II: La llegada de los tres', 'Stephen King', '0-7645-2655-5', True),
+        Libro('La torre oscura III: Las tierras baldías', 'Stephen King', '0-7645-2656-6', True),
+        Libro('La torre oscura IV: Mago y cristal', 'Stephen King', '0-7645-2657-7', True),
+        Libro('La torre oscura V: Lobos del Calla', 'Stephen King', '0-7645-2658-8', True),
+        Libro('La torre oscura VI: Canción de Susannah', 'Stephen King', '0-7645-2659-9', True),
+        Libro('La torre oscura VII: La torre oscura', 'Stephen King', '0-7645-2660-0', True),
+        Libro('Doctor Sueño', 'Stephen King', '0-7645-2661-1', True),
+        Libro('11/22/63', 'Stephen King', '0-7645-2662-2', True),
+        Libro('El Instituto', 'Stephen King', '0-7645-2663-3', True)
+            ]
+    
+    for libro in Libros:
+        mi_libro = {
+            "Titulo": libro.titulo,
+            "Autor": libro.autor,
+            "ISBN": libro.isbn,
+            "Disponible": libro.disponible
+        }
+        catalogo.append(mi_libro)
+   
+    os.system('cls' if os.name == 'nt' else 'clear')
+    ruta= Path(__file__).parent / 'catalogo.json'
+    if not ruta.exists():
+        with ruta.open('w', encoding="utf-8") as f:
+            json.dump(catalogo, f, ensure_ascii=False, indent=2)
+    
+    while True:
+        menu.mostrarmenu()
+        try:
+            opcion = int(input('Elige una opción: '))
+        except ValueError:
+            print('Introduce una opción válida')
+            continue
+
+        match opcion:
+            case 1:
+                #afegir()
+                pass
+            case 2:
+                #prestar()
+                pass
+            case 3:
+                #devolver()
+                pass
+            case 4:
+                #buscar()
+                pass
+            case 5:
+                print('¡Gracias por usar el gestor de Biblioteca!')
+                break
+            case _:
+                print('Opción no válida!')
+
+        input('Pulse cualquier tecla para continuar....')
+        os.system('cls' if os.name == 'nt' else 'clear')
+
+# Llamada a la main
+if __name__ == '__main__':
+    main()
