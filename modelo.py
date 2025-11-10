@@ -65,7 +65,24 @@ def buscar():
         print('No tenemos libros de este autor en la biblioteca') #Si no lo encuentra muestra este mensaje       
     input('Pulse cualquier tecla para continuar....')
 
-    
+ def prestar():
+    ruta = Path(__file__).parent / 'catalogo.json' 
+    with ruta.open('r', encoding="utf-8") as f:
+        diccionario = json.load(f) #bajo el contenido del json al diccionario
+    titulo = input('Introduce el título del libro que desea prestar:           ')
+    for dic in diccionario:
+        if dic["Titulo"] == titulo:
+            if dic["Disponible"]:
+                libroaprestar = Libro(dic["Titulo"], dic["Autor"], dic["ISBN"], dic["Disponible"])
+                libroaprestar.prestar()
+                print(f'El libro "{titulo}" ha sido prestado correctamente.')
+                dic["Disponible"] = libroaprestar.disponible
+                with ruta.open('w', encoding="utf-8") as f:
+                    json.dump(diccionario, f, ensure_ascii=False, indent=2)
+            else:
+                print(f'El libro "{titulo}" no está disponible para préstamo.')
+            break
+           
 def main():
     catalogo = []
 
