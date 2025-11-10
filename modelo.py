@@ -65,7 +65,7 @@ def buscar():
         print('No tenemos libros de este autor en la biblioteca') #Si no lo encuentra muestra este mensaje       
     input('Pulse cualquier tecla para continuar....')
 
- def prestar():
+def prestar():
     ruta = Path(__file__).parent / 'catalogo.json' 
     with ruta.open('r', encoding="utf-8") as f:
         diccionario = json.load(f) #bajo el contenido del json al diccionario
@@ -82,7 +82,25 @@ def buscar():
             else:
                 print(f'El libro "{titulo}" no está disponible para préstamo.')
             break
-           
+
+def devolver():
+    ruta = Path(__file__).parent / 'catalogo.json' 
+    with ruta.open('r', encoding="utf-8") as f:
+        diccionario = json.load(f) #bajo el contenido del json al diccionario
+    titulo = input('Introduce el título del libro que desea devolver:           ')
+    for dic in diccionario:
+        if dic["Titulo"] == titulo:
+            if not dic["Disponible"]:
+                libroadevolver = Libro(dic["Titulo"], dic["Autor"], dic["ISBN"], dic["Disponible"])
+                libroadevolver.devolver()
+                print(f'El libro "{titulo}" ha sido devuelto correctamente.')
+                dic["Disponible"] = libroadevolver.disponible
+                with ruta.open('w', encoding="utf-8") as f:
+                    json.dump(diccionario, f, ensure_ascii=False, indent=2)
+            else:
+                print(f'El libro "{titulo}" está disponible para préstamo no para devolver.')
+            break
+
 def main():
     catalogo = []
 
