@@ -48,7 +48,24 @@ def afegir():
     with ruta.open('w', encoding="utf-8") as f:
          json.dump(diccionario, f, ensure_ascii=False, indent=2)
 
+def buscar():
+    trobat = False
+    ruta = Path(__file__).parent / 'catalogo.json' 
+    with ruta.open('r', encoding="utf-8") as f:
+        diccionario = json.load(f) #bajo el contenido del json
+    
+    autor = input('Introduce el autor por el que desea buscar:           ')
+    for dic in diccionario:
+        if dic["Autor"] == autor:
+            print(f'Esto es lo que se ha encontrado en la biblioteca:\n') if not trobat else None
+            llibretrobat = Libro(dic["Titulo"], dic["Autor"], dic["ISBN"], dic["Disponible"])
+            print(llibretrobat) # si los encuentra los imprime
+            trobat = True
+    if not trobat:
+        print('No tenemos libros de este autor en la biblioteca') #Si no lo encuentra muestra este mensaje       
+    input('Pulse cualquier tecla para continuar....')
 
+    
 def main():
     catalogo = []
 
