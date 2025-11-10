@@ -22,6 +22,33 @@ class Libro:
         estado = "Disponible" if self.disponible else "Prestado"
         return f"{self.titulo} por {self.autor} (ISBN: {self.isbn}) - {estado}"
 
+def afegir():
+    print('------------Introducción de un nuevo libro------------------\n\n')
+    titol = input('Introduce el título del libro:                   ')
+    autor = input('Introduce el autor del libro:                    ')
+    ISBN = input('Introduce el ISBN del libro:                   ')
+    Disponible = input('¿Está disponible ya el libro? Si/No:                ').lower()
+
+    if Disponible == 'si':
+        Disponible = True
+    else:
+        Disponible = False
+
+     
+    nou_registre ={"Titulo" : titol, "Autor" : autor, "ISBN" : ISBN, "Disponible" : Disponible}      
+        
+    #print(nou_registre)
+    ruta = Path(__file__).parent / 'catalogo.json'
+    with ruta.open('r', encoding="utf-8") as f:
+        diccionario = json.load(f)
+    #print(f'Imprimiendo diccionario {diccionario}')
+    diccionario.append(nou_registre)
+        #print(diccionario)
+    print('Libro añadido al catálogo:')
+    with ruta.open('w', encoding="utf-8") as f:
+         json.dump(diccionario, f, ensure_ascii=False, indent=2)
+
+
 def main():
     catalogo = []
 
